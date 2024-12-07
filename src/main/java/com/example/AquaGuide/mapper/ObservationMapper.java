@@ -14,7 +14,7 @@ public interface ObservationMapper {
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     Observation partialUpdate(ObservationDto observationDto, @MappingTarget Observation observation);
 
-//    Observation toEntity(ObservationCreationDto observationCreationDto);
+    Observation toEntity(ObservationCreationDto observationCreationDto);
 //
 //    ObservationCreationDto toDto1(Observation observation);
 //

@@ -14,7 +14,7 @@ public interface RegionMapper {
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     Region partialUpdate(RegionDto regionDto, @MappingTarget Region region);
 
-//    Region toEntity(RegionCreationDto regionCreationDto);
+    Region toEntity(RegionCreationDto regionCreationDto);
 //
 //    RegionCreationDto toDto1(Region region);
 //
