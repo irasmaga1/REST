@@ -29,7 +29,8 @@ public class Observation {
     private String wildlifePresent;
 
 
-    public Observation(String observerName, String observeDate, double phLevel, double temperature, String waterQuality, String wildlifePresent) {
+    public Observation(Long id, String observerName, String observeDate, double phLevel, double temperature, String waterQuality, String wildlifePresent) {
+        this.id = id;
         this.observerName = observerName;
         this.observeDate = observeDate;
         this.phLevel = phLevel;
@@ -88,4 +89,25 @@ public class Observation {
     public void setWildlifePresent(String wildlifePresent) {
         this.wildlifePresent = wildlifePresent;
     }
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    @Override
+    public String toString() {
+        return "Observation{" +
+                "id=" + id +
+                ", observerName='" + observerName + '\'' +
+                ", observeDate='" + observeDate + '\'' +
+                ", phLevel=" + phLevel +
+                ", temperature=" + temperature +
+                ", waterQuality='" + waterQuality + '\'' +
+                ", wildlifePresent='" + wildlifePresent + '\'' +
+                '}';
+    }
+
 }

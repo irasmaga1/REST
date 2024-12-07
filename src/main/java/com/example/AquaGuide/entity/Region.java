@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 @Entity
 @Table(name = "region")
 public class Region {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -18,7 +19,8 @@ public class Region {
     @Column(name = "description")
     private String description;
 
-    public Region(String name, int population, String description) {
+    public Region(Long id, String name, int population, String description) {
+        this.id = id;
         this.name = name;
         this.population = population;
         this.description = description;
@@ -49,6 +51,13 @@ public class Region {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
 
