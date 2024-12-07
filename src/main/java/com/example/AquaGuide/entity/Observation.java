@@ -88,6 +88,4 @@ public class Observation {
     public void setWildlifePresent(String wildlifePresent) {
         this.wildlifePresent = wildlifePresent;
     }
-
-
 }
