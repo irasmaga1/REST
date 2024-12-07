@@ -9,6 +9,19 @@ public class Water {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Override
+    public String toString() {
+        return "Water{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", type='" + type + '\'' +
+                ", area=" + area +
+                ", depth=" + depth +
+                ", location='" + location + '\'' +
+                ", description='" + description + '\'' +
+                '}';
+    }
+
     @Column(name = "name")
     private String name;
 
@@ -30,7 +43,8 @@ public class Water {
     public Water() {
     }
 
-    public Water(String name, String type, double area, double depth, String location, String description) {
+    public Water(Long id, String name, String type, double area, double depth, String location, String description) {
+        this.id = id;
         this.name = name;
         this.type = type;
         this.area = area;
@@ -86,4 +100,13 @@ public class Water {
     public void setDescription(String description) {
         this.description = description;
     }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
 }
