@@ -26,7 +26,7 @@ public class WaterService {
     public WaterDto getWaterById(Long id) {
         Water water = waterRepository.findById(id)
                 .orElseThrow(() -> {
-                    return new WaterNotFound("Water with ID: " + id + " not found.");
+                    return new WaterNotFound("Water body with ID: " + id + " not found.");
                 });
         return waterMapper.toDto(water);
     }
@@ -41,7 +41,7 @@ public class WaterService {
     @Transactional
     public WaterDto createWater(WaterCreationDto waterCreationDto) {
         if (waterRepository.existsByName(waterCreationDto.name())) {
-            throw new WaterAlreadyExists("Water with name: " + waterCreationDto.name() + " already exists.");
+            throw new WaterAlreadyExists("Water body with name: " + waterCreationDto.name() + " already exists.");
         }
         return waterMapper.toDto(waterRepository.save(waterMapper.toEntity(waterCreationDto)));
     }
@@ -49,7 +49,7 @@ public class WaterService {
     @Transactional
     public WaterDto updateWater(Long id, WaterDto updatedWater) {
         Water water = waterRepository.findById(id)
-                .orElseThrow(() -> new WaterNotFound("Water with ID: " + id + " not found."));
+                .orElseThrow(() -> new WaterNotFound("Water body with ID: " + id + " not found."));
         water.setName(updatedWater.name());
         water.setType(updatedWater.type());
         water.setArea(updatedWater.area());
@@ -64,7 +64,7 @@ public class WaterService {
     @Transactional
     public void deleteWater(Long id) {
         Water water = waterRepository.findById(id)
-                .orElseThrow(() -> new WaterNotFound("Water with ID: " + id + " not found."));
+                .orElseThrow(() -> new WaterNotFound("Water body with ID: " + id + " not found."));
         waterRepository.deleteById(id);
     }
 }
