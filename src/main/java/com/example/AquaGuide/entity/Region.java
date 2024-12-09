@@ -19,8 +19,7 @@ public class Region {
     @Column(name = "description")
     private String description;
 
-    public Region(Long id, String name, int population, String description) {
-        this.id = id;
+    public Region(String name, int population, String description) {
         this.name = name;
         this.population = population;
         this.description = description;

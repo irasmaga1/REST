@@ -30,8 +30,7 @@ public class Water {
     public Water() {
     }
 
-    public Water(Long id, String name, String type, double area, double depth, String location, String description) {
-        this.id = id;
+    public Water(String name, String type, double area, double depth, String location, String description) {
         this.name = name;
         this.type = type;
         this.area = area;

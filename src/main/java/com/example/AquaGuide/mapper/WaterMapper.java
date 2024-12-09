@@ -15,9 +15,4 @@ public interface WaterMapper {
     Water partialUpdate(WaterDto waterDto, @MappingTarget Water water);
 
     Water toEntity(WaterCreationDto waterCreationDto);
-//
-//    WaterCreationDto toDto1(Water water);
-//
-//    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-//    Water partialUpdate(WaterCreationDto waterCreationDto, @MappingTarget Water water);
 }
