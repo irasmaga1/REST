@@ -29,8 +29,7 @@ public class Observation {
     private String wildlifePresent;
 
 
-    public Observation(Long id, String observerName, String observeDate, double phLevel, double temperature, String waterQuality, String wildlifePresent) {
-        this.id = id;
+    public Observation(String observerName, String observeDate, double phLevel, double temperature, String waterQuality, String wildlifePresent) {
         this.observerName = observerName;
         this.observeDate = observeDate;
         this.phLevel = phLevel;
