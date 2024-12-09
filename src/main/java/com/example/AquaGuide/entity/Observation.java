@@ -29,6 +29,15 @@ public class Observation {
     private String wildlifePresent;
 
 
+    @ManyToOne
+    @JoinColumn(name = "region_id")
+    private Region region;
+
+    @ManyToOne
+    @JoinColumn(name = "water_body_id")
+    private Water waterBody;
+
+
     public Observation(String observerName, String observeDate, double phLevel, double temperature, String waterQuality, String wildlifePresent) {
         this.observerName = observerName;
         this.observeDate = observeDate;

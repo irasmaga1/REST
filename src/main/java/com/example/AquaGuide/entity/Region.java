@@ -2,6 +2,8 @@ package com.example.AquaGuide.entity;
 
 import jakarta.persistence.*;
 
+import java.util.List;
+
 @Entity
 @Table(name = "region")
 public class Region {
@@ -18,6 +20,14 @@ public class Region {
 
     @Column(name = "description")
     private String description;
+
+    @OneToMany(mappedBy = "region")
+    private List<Observation> observations;
+
+    @OneToMany(mappedBy = "region")
+    private List<Water> waterBodies;
+
+
 
     public Region(String name, int population, String description) {
         this.name = name;
