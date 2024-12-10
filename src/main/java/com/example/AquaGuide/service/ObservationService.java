@@ -7,6 +7,10 @@ import com.example.AquaGuide.exception.ObservationAlreadyExists;
 import com.example.AquaGuide.exception.ObservationNotFound;
 import com.example.AquaGuide.mapper.ObservationMapper;
 import com.example.AquaGuide.repository.ObservationRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,8 +24,8 @@ public class ObservationService {
         this.observationRepository = observationRepository;
     }
 
-    public final ObservationMapper observationMapper;
-    public final ObservationRepository observationRepository;
+    private final ObservationMapper observationMapper;
+    private final ObservationRepository observationRepository;
 
 
     public ObservationDto getObservationById(Long id) {
@@ -32,11 +36,11 @@ public class ObservationService {
         return observationMapper.toDto(observation);
     }
 
-    public List<ObservationDto> getAllObservations() {
-        List<Observation> observations = observationRepository.findAll();
-        return observations.stream()
-                .map(observationMapper::toDto)
-                .toList();
+    public Page<ObservationDto> getAllPaginatedObservations(int page, int size, String  sortBy, String  direction){
+        Sort sort = direction.equalsIgnoreCase("desc")? Sort.by(Sort.Order.desc(sortBy)):Sort.by(Sort.Order.asc(sortBy));
+        Pageable pageable = PageRequest.of(page, size, sort);
+        Page<Observation> observationPage = observationRepository.findAll(pageable);
+        return observationPage.map(observationMapper::toDto);
     }
 
     @Transactional

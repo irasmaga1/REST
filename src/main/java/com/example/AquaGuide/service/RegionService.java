@@ -7,6 +7,10 @@ import com.example.AquaGuide.exception.RegionAlreadyExists;
 import com.example.AquaGuide.exception.RegionNotFound;
 import com.example.AquaGuide.mapper.RegionMapper;
 import com.example.AquaGuide.repository.RegionRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,12 +35,13 @@ public class RegionService {
         return regionMapper.toDto(region);
     }
 
-    public List<RegionDto> getAllRegions(){
-        List<Region> regions=regionRepository.findAll();
-        return regions.stream()
-                .map(regionMapper::toDto)
-                .toList();
+    public Page<RegionDto> getAllPaginatedRegions(int page, int size, String sortBy, String direction){
+        Sort sort = direction.equalsIgnoreCase("desc")?Sort.by(Sort.Order.desc(sortBy)):Sort.by(Sort.Order.asc(sortBy));
+        Pageable pageable = PageRequest.of(page,size,sort);
+        Page<Region> regionPage = regionRepository.findAll(pageable);
+        return  regionPage.map(regionMapper::toDto);
     }
+
 
     @Transactional
     public RegionDto createRegion (RegionCreationDto regionCreationDto){

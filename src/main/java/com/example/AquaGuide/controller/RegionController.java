@@ -4,6 +4,7 @@ import com.example.AquaGuide.dto.RegionCreationDto;
 import com.example.AquaGuide.dto.RegionDto;
 import com.example.AquaGuide.service.RegionService;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -25,8 +26,13 @@ public class RegionController {
     }
 
     @GetMapping
-    public ResponseEntity<List<RegionDto>> getAllRegions (){
-        return ResponseEntity.ok(regionService.getAllRegions());
+    public Page<RegionDto>getAllRegions(
+            @RequestParam(defaultValue = "0")int page,
+            @RequestParam(defaultValue = "10")int size,
+            @RequestParam(defaultValue = "id")String sortBy,
+            @RequestParam(defaultValue = "asc")String direction
+    ){
+        return regionService.getAllPaginatedRegions(page, size, sortBy, direction);
     }
 
     @PostMapping

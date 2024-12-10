@@ -4,11 +4,10 @@ import com.example.AquaGuide.dto.ObservationCreationDto;
 import com.example.AquaGuide.dto.ObservationDto;
 import com.example.AquaGuide.service.ObservationService;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/observations")
@@ -25,8 +24,13 @@ public class ObservationController {
     }
 
     @GetMapping
-    public ResponseEntity<List<ObservationDto>> getAllObservations(){
-        return ResponseEntity.ok(observationService.getAllObservations());
+    public Page<ObservationDto> getAllObservations(
+            @RequestParam(defaultValue = "0")int page,
+            @RequestParam(defaultValue = "10")int size,
+            @RequestParam(defaultValue = "id")String sortBy,
+            @RequestParam(defaultValue = "asc")String direction)
+    {
+        return observationService.getAllPaginatedObservations(page, size, sortBy, direction);
     }
 
     @PostMapping

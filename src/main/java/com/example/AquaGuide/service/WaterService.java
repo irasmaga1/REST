@@ -7,6 +7,10 @@ import com.example.AquaGuide.exception.WaterAlreadyExists;
 import com.example.AquaGuide.exception.WaterNotFound;
 import com.example.AquaGuide.mapper.WaterMapper;
 import com.example.AquaGuide.repository.WaterRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,14 +34,13 @@ public class WaterService {
                 });
         return waterMapper.toDto(water);
     }
-
-    public List<WaterDto> getAllWaters() {
-        List<Water> waters = waterRepository.findAll();
-        return waters.stream()
-                .map(waterMapper::toDto)
-                .toList();
+    
+    public Page<WaterDto> getAllPaginatedWaters(int page, int size, String sortBy, String direction){
+        Sort sort = direction.equalsIgnoreCase("desc")?Sort.by(Sort.Order.desc(sortBy)):Sort.by(Sort.Order.asc(sortBy));
+        Pageable pageable = PageRequest.of(page, size, sort);
+        Page<Water> waterPage = waterRepository.findAll(pageable);
+        return waterPage.map(waterMapper::toDto);
     }
-
     @Transactional
     public WaterDto createWater(WaterCreationDto waterCreationDto) {
         if (waterRepository.existsByName(waterCreationDto.name())) {

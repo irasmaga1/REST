@@ -4,11 +4,10 @@ import com.example.AquaGuide.dto.WaterCreationDto;
 import com.example.AquaGuide.dto.WaterDto;
 import com.example.AquaGuide.service.WaterService;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/waters")
@@ -25,8 +24,14 @@ public class WaterController {
     }
 
     @GetMapping
-    public ResponseEntity<List<WaterDto>> getAllWaters(){
-        return ResponseEntity.ok(waterService.getAllWaters());
+
+    public Page<WaterDto> getAllWaters(
+            @RequestParam(defaultValue = "0")int page,
+            @RequestParam(defaultValue = "10")int size,
+            @RequestParam(defaultValue = "id")String sortBy,
+            @RequestParam(defaultValue = "asc")String direction
+    ){
+        return waterService.getAllPaginatedWaters(page, size, sortBy, direction);
     }
 
     @PostMapping
