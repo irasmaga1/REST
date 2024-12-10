@@ -29,9 +29,30 @@ public class Observation {
     private String wildlifePresent;
 
 
+    public Region getRegion() {
+        return region;
+    }
+
+    public void setRegion(Region region) {
+        this.region = region;
+    }
+
+    public Water getWaterBody() {
+        return waterBody;
+    }
+
+    public void setWaterBody(Water waterBody) {
+        this.waterBody = waterBody;
+    }
+
     @ManyToOne
     @JoinColumn(name = "region_id")
     private Region region;
+
+    public Observation(Region region, Water waterBody) {
+        this.region = region;
+        this.waterBody = waterBody;
+    }
 
     @ManyToOne
     @JoinColumn(name = "water_body_id")

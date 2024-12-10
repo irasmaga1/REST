@@ -29,8 +29,29 @@ public class Water {
     @Column(name = "description")
     private String description;
 
+    public List<Observation> getObservations() {
+        return observations;
+    }
+
+    public void setObservations(List<Observation> observations) {
+        this.observations = observations;
+    }
+
+    public Region getRegion() {
+        return region;
+    }
+
+    public void setRegion(Region region) {
+        this.region = region;
+    }
+
     @OneToMany(mappedBy = "waterBody")
     private List<Observation> observations;
+
+    public Water(List<Observation> observations, Region region) {
+        this.observations = observations;
+        this.region = region;
+    }
 
     @ManyToOne
     @JoinColumn(name = "region_id")

@@ -2,6 +2,7 @@ package com.example.AquaGuide.entity;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -21,11 +22,35 @@ public class Region {
     @Column(name = "description")
     private String description;
 
-    @OneToMany(mappedBy = "region")
-    private List<Observation> observations;
+    public List<Observation> getObservations() {
+        return observations;
+    }
 
-    @OneToMany(mappedBy = "region")
-    private List<Water> waterBodies;
+    public void setObservations(List<Observation> observations) {
+        this.observations = observations;
+    }
+
+    public List<Water> getWaterBodies() {
+        return waterBodies;
+    }
+
+    public void setWaterBodies(List<Water> waterBodies) {
+        this.waterBodies = waterBodies;
+    }
+
+    @OneToMany(mappedBy = "region", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Observation> observations = new ArrayList<>();
+
+    @OneToMany(mappedBy = "region", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Water> waterBodies = new ArrayList<>();
+
+
+
+    public Region(List<Observation> observations, List<Water> waterBodies) {
+        this.observations = observations;
+        this.waterBodies = waterBodies;
+    }
+
 
 
 

@@ -9,6 +9,8 @@ import org.mapstruct.*;
 public interface ObservationMapper {
     Observation toEntity(ObservationDto observationDto);
 
+    @Mapping(target = "region", ignore = true) // Уникаємо рекурсії
+    @Mapping(target = "waterBody", ignore = true) // Уникаємо рекурсії
     ObservationDto toDto(Observation observation);
 
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)

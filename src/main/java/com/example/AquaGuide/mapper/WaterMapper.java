@@ -9,6 +9,15 @@ import org.mapstruct.*;
 public interface WaterMapper {
     Water toEntity(WaterDto waterDto);
 
+    @AfterMapping
+    default void linkObservations(@MappingTarget Water water) {
+        if (water.getObservations() != null) {
+            water.getObservations().forEach(observation -> observation.setWaterBody(water));
+        }
+    }
+
+    @Mapping(target = "observations", ignore = true) // Уникаємо рекурсії
+    @Mapping(target = "region", ignore = true) // Уникаємо рекурсії
     WaterDto toDto(Water water);
 
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)

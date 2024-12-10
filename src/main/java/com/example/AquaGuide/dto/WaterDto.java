@@ -1,10 +1,12 @@
 package com.example.AquaGuide.dto;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * DTO for {@link com.example.AquaGuide.entity.Water}
  */
 public record WaterDto(Long id, String name, String type, double area, double depth, String location,
-                       String description) implements Serializable {
+                       String description, List<ObservationDto> observations,
+                       RegionDto region) implements Serializable {
 }
