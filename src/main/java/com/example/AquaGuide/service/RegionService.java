@@ -7,6 +7,8 @@ import com.example.AquaGuide.exception.RegionAlreadyExists;
 import com.example.AquaGuide.exception.RegionNotFound;
 import com.example.AquaGuide.mapper.RegionMapper;
 import com.example.AquaGuide.repository.RegionRepository;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -19,14 +21,15 @@ import java.util.List;
 @Service
 @Transactional(readOnly = true)
 public class RegionService {
+    private final RegionMapper regionMapper;
+    private final RegionRepository regionRepository;
+
     public RegionService(RegionMapper regionMapper, RegionRepository regionRepository) {
         this.regionMapper = regionMapper;
         this.regionRepository = regionRepository;
     }
 
-    private final RegionMapper regionMapper;
-    private final RegionRepository regionRepository;
-
+    @Cacheable(value = "regions", key = "#id")
     public RegionDto getRegionById(Long id){
         Region region = regionRepository.findById(id)
                 .orElseThrow(()->{
@@ -35,6 +38,7 @@ public class RegionService {
         return regionMapper.toDto(region);
     }
 
+    @Cacheable(value = "regions", key = "#page + '-' + #size + '-' + #sortBy + '-' + #direction")
     public Page<RegionDto> getAllPaginatedRegions(int page, int size, String sortBy, String direction){
         Sort sort = direction.equalsIgnoreCase("desc")?Sort.by(Sort.Order.desc(sortBy)):Sort.by(Sort.Order.asc(sortBy));
         Pageable pageable = PageRequest.of(page,size,sort);
@@ -44,6 +48,7 @@ public class RegionService {
 
 
     @Transactional
+    @Cacheable(value = "regions", key = "#result.id")
     public RegionDto createRegion (RegionCreationDto regionCreationDto){
         if (regionRepository.existsByName(regionCreationDto.name())){
             throw new RegionAlreadyExists("Region with name: "+regionCreationDto.name()+" already exists.");
@@ -52,6 +57,7 @@ public class RegionService {
     }
 
     @Transactional
+    @Cacheable(value = "regions", key = "#id")
     public RegionDto updateRegion(Long id, RegionDto updatedRegion){
         Region region = regionRepository.findById(id)
                 .orElseThrow(()-> new RegionNotFound("Region with id: "+id+" not found."));
@@ -64,6 +70,7 @@ public class RegionService {
     }
 
     @Transactional
+    @CacheEvict(value = "regions", key = "#id")
     public void deleteRegion(Long id){
         Region region = regionRepository.findById(id)
                 .orElseThrow(()-> new RegionNotFound("Region with ID: "+id+" not found."));

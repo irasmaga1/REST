@@ -47,6 +47,7 @@ public class WaterController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteWater(@PathVariable Long id){
+        waterService.deleteWater(id);
         return ResponseEntity.ok("Water body deleted successfully.");
     }
 }

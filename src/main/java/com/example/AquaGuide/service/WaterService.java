@@ -7,6 +7,8 @@ import com.example.AquaGuide.exception.WaterAlreadyExists;
 import com.example.AquaGuide.exception.WaterNotFound;
 import com.example.AquaGuide.mapper.WaterMapper;
 import com.example.AquaGuide.repository.WaterRepository;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -19,14 +21,15 @@ import java.util.List;
 @Service
 @Transactional(readOnly = true)
 public class WaterService {
+    private final WaterMapper waterMapper;
+    private final WaterRepository waterRepository;
+
     public WaterService(WaterMapper waterMapper, WaterRepository waterRepository) {
         this.waterMapper = waterMapper;
         this.waterRepository = waterRepository;
     }
 
-    private final WaterMapper waterMapper;
-    private final WaterRepository waterRepository;
-
+    @Cacheable(value = "waters", key = "#id")
     public WaterDto getWaterById(Long id) {
         Water water = waterRepository.findById(id)
                 .orElseThrow(() -> {
@@ -34,7 +37,8 @@ public class WaterService {
                 });
         return waterMapper.toDto(water);
     }
-    
+
+    @Cacheable(value = "waters", key = "#page + '-' + #size + '-' + #sortBy + '-' + #direction")
     public Page<WaterDto> getAllPaginatedWaters(int page, int size, String sortBy, String direction){
         Sort sort = direction.equalsIgnoreCase("desc")?Sort.by(Sort.Order.desc(sortBy)):Sort.by(Sort.Order.asc(sortBy));
         Pageable pageable = PageRequest.of(page, size, sort);
@@ -42,6 +46,7 @@ public class WaterService {
         return waterPage.map(waterMapper::toDto);
     }
     @Transactional
+    @Cacheable(value = "waters", key = "#result.id")
     public WaterDto createWater(WaterCreationDto waterCreationDto) {
         if (waterRepository.existsByName(waterCreationDto.name())) {
             throw new WaterAlreadyExists("Water body with name: " + waterCreationDto.name() + " already exists.");
@@ -50,6 +55,7 @@ public class WaterService {
     }
 
     @Transactional
+    @Cacheable(value = "waters", key = "#id")
     public WaterDto updateWater(Long id, WaterDto updatedWater) {
         Water water = waterRepository.findById(id)
                 .orElseThrow(() -> new WaterNotFound("Water body with ID: " + id + " not found."));
@@ -65,6 +71,7 @@ public class WaterService {
     }
 
     @Transactional
+    @CacheEvict(value = "waters", key = "#id")
     public void deleteWater(Long id) {
         Water water = waterRepository.findById(id)
                 .orElseThrow(() -> new WaterNotFound("Water body with ID: " + id + " not found."));

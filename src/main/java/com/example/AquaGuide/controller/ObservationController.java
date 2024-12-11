@@ -46,6 +46,7 @@ public class ObservationController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteObservation(@PathVariable Long id){
+        observationService.deleteObservation(id);
         return ResponseEntity.ok("Observation deleted successfully.");
     }
 }
