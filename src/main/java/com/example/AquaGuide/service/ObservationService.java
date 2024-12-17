@@ -1,6 +1,5 @@
 package com.example.AquaGuide.service;
 
-import com.example.AquaGuide.dto.ObservationCreationDto;
 import com.example.AquaGuide.dto.ObservationDto;
 import com.example.AquaGuide.entity.Observation;
 import com.example.AquaGuide.exception.ObservationAlreadyExists;
